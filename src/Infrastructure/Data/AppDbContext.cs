@@ -9,6 +9,8 @@ public class AppDbContext : DbContext
 
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Dispositivo> Dispositivos { get; set; }
+    public DbSet<Evento> Eventos { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -34,6 +36,17 @@ public class AppDbContext : DbContext
             entity.HasOne(d => d.Cliente)
                 .WithMany(c => c.Dispositivos)
                 .HasForeignKey(d => d.ClienteId);
+        });
+        
+        // Configuração da entidade Evento
+        modelBuilder.Entity<Evento>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Tipo).IsRequired();
+            entity.Property(e => e.DataHora).IsRequired();
+            entity.HasOne(e => e.Dispositivo)
+                .WithMany()
+                .HasForeignKey(e => e.DispositivoId);
         });
     }
 }   

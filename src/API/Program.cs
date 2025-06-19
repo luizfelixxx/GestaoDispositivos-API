@@ -1,5 +1,6 @@
 using Application.UseCases.Clientes;
 using Application.UseCases.Dispositivos;
+using Application.UseCases.Eventos;
 using API.Middleware;
 using Domain.Interfaces;
 using Infrastructure.Data;
@@ -29,6 +30,10 @@ builder.Services.AddScoped<IDispositivoRepository, DispositivoRepository>();
 builder.Services.AddScoped<CreateDispositivoUseCase>();
 builder.Services.AddScoped<GetDispositivosByClienteUseCase>();
 
+// Evento
+builder.Services.AddScoped<IEventoRepository, EventoRepository>();
+builder.Services.AddScoped<CreateEventoUseCase>();
+builder.Services.AddScoped<GetEventosUseCase>();
 var app = builder.Build();
 
 // --- Configuração do Pipeline HTTP ---
