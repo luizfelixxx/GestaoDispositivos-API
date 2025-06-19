@@ -1,6 +1,4 @@
-﻿namespace DefaultNamespace;
-
-using Domain.Entities;
+﻿using Domain.Entities;
 
 namespace Domain.Interfaces;
 

@@ -1,6 +1,3 @@
-﻿namespace DefaultNamespace;
+﻿namespace Application.DTOs.Cliente;
 
-public class ClienteResponseDto
-{
-    
-}
+public record ClienteResponseDto(Guid Id, string Nome, string Email, string? Telefone, bool Status);

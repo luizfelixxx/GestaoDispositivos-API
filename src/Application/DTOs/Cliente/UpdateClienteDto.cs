@@ -1,6 +1,3 @@
-﻿namespace DefaultNamespace;
+﻿namespace Application.DTOs.Cliente;
 
-public class UpdateClienteDto
-{
-    
-}
+public record UpdateClienteDto(string Nome, string? Telefone);

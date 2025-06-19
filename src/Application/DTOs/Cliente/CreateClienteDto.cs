@@ -1,6 +1,3 @@
-﻿namespace DefaultNamespace;
+﻿namespace Application.DTOs.Cliente;
 
-public class CreateClienteDto
-{
-    
-}
+public record CreateClienteDto(string Nome, string Email, string? Telefone);

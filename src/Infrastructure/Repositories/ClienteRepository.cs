@@ -1,6 +1,4 @@
-﻿namespace DefaultNamespace;
-
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;

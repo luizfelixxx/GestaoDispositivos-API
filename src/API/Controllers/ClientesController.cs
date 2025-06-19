@@ -1,6 +1,4 @@
-﻿namespace DefaultNamespace;
-
-using Application.DTOs.Cliente;
+﻿using Application.DTOs.Cliente;
 using Application.UseCases.Clientes;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,4 @@
-﻿namespace DefaultNamespace;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
 
 public class Cliente
 {
