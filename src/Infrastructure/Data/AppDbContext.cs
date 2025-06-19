@@ -8,7 +8,7 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     public DbSet<Cliente> Clientes { get; set; }
-
+    public DbSet<Dispositivo> Dispositivos { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -22,6 +22,18 @@ public class AppDbContext : DbContext
             entity.Property(c => c.Email).IsRequired().HasMaxLength(150);
             entity.Property(c => c.Telefone).HasMaxLength(20);
             entity.Property(c => c.Status).IsRequired();
+        });
+        
+        // Configuração da entidade Dispositivo
+        modelBuilder.Entity<Dispositivo>(entity =>
+        {
+            entity.HasKey(d => d.Id);
+            entity.Property(d => d.Serial).IsRequired().HasMaxLength(50);
+            entity.HasIndex(d => d.Serial).IsUnique();
+            entity.Property(d => d.IMEI).IsRequired().HasMaxLength(50);
+            entity.HasOne(d => d.Cliente)
+                .WithMany(c => c.Dispositivos)
+                .HasForeignKey(d => d.ClienteId);
         });
     }
 }   

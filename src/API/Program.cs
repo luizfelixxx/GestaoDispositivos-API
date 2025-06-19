@@ -1,4 +1,5 @@
 using Application.UseCases.Clientes;
+using Application.UseCases.Dispositivos;
 using API.Middleware;
 using Domain.Interfaces;
 using Infrastructure.Data;
@@ -15,13 +16,18 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
-// Injeção de Dependência - Apenas Cliente
+// Cliente
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<CreateClienteUseCase>();
 builder.Services.AddScoped<UpdateClienteUseCase>();
 builder.Services.AddScoped<DeleteClienteUseCase>();
 builder.Services.AddScoped<GetClienteByIdUseCase>();
 builder.Services.AddScoped<GetAllClientesUseCase>();
+
+// Dispositivo
+builder.Services.AddScoped<IDispositivoRepository, DispositivoRepository>();
+builder.Services.AddScoped<CreateDispositivoUseCase>();
+builder.Services.AddScoped<GetDispositivosByClienteUseCase>();
 
 var app = builder.Build();
 
