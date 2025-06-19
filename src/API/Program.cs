@@ -1,4 +1,5 @@
 using Application.UseCases.Clientes;
+using API.Middleware;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
@@ -6,8 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuração dos Serviços
+// --- Configuração dos Serviços ---
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer(); 
+builder.Services.AddSwaggerGen(); 
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
@@ -21,7 +25,49 @@ builder.Services.AddScoped<GetAllClientesUseCase>();
 
 var app = builder.Build();
 
-// Configuração do Pipeline HTTP
+// --- Configuração do Pipeline HTTP ---
+app.UseMiddleware<GlobalExceptionHandler>();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 app.UseHttpsRedirection();
 app.MapControllers();
+
+void ApplyMigrations(IApplicationBuilder webApp)
+{
+    using var scope = webApp.ApplicationServices.CreateScope();
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        var retryCount = 10;
+        while(retryCount > 0)
+        {
+            try
+            {
+                context.Database.Migrate();
+                Console.WriteLine("Migrações aplicadas com sucesso.");
+                break;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Não foi possível conectar ao banco de dados. Tentando novamente em 5s... Tentativas restantes: {retryCount-1}");
+                retryCount--;
+                Thread.Sleep(5000);
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações.");
+    }
+}
+
+ApplyMigrations(app);
+
 app.Run();

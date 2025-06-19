@@ -1,0 +1,35 @@
+﻿version: '3.8'
+
+services:
+  db:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    container_name: gestaodispositivos-db
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqldata:/var/opt/mssql
+    networks:
+      - backend
+
+  api:
+    container_name: gestaodispositivos-api
+    build:
+      context: .
+      dockerfile: src/API/Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=GestaoDispositivosDb;User Id=sa;Password=Your_password123;
+    depends_on:
+      - db
+    networks:
+      - backend
+
+volumes:
+  sqldata:
+
+networks:
+  backend:
