@@ -20,7 +20,7 @@ services:
       context: .
       dockerfile: src/API/Dockerfile
     ports:
-      - "8080:80"
+      - "8080:8080"
     environment:
       - ConnectionStrings__DefaultConnection=Server=db,1433;Database=GestaoDispositivosDb;User Id=sa;Password=Your_password123;
     depends_on:
