@@ -22,6 +22,7 @@ services:
     ports:
       - "8080:8080"
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=db;Database=GestaoDispositivosDb;User Id=sa;Password=Your_password123;TrustServerCertificate=True;
     depends_on:
       - db
